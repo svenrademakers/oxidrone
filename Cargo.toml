@@ -19,10 +19,7 @@ keywords = ["drone", "flight-controller", "embedded", "async", "stm32"]
 categories = ["embedded", "aerospace"]
 
 [workspace.dependencies]
-embassy-executor = { version = "0.8", features = [ "executor-thread", "executor-interrupt", "defmt" ] }
-embassy-futures = "0.1"
-embassy-sync = "0.7"
-
+rtic = "2.2.0"
 defmt = "1.0"
 defmt-rtt = "1.0"
 panic-probe = { version = "1.0", features = ["print-defmt"] }
@@ -31,10 +28,11 @@ embedded-hal = "1.0"
 embedded-hal-async = "1.0"
 embedded-io-async = "0.6"
 
-micromath = "2.1"
+micromath = { version = "2.1", features = ["vector"] }
 nalgebra = { version = "0.34", default-features = false, features = ["libm"] }
 heapless = "0.8"
 nb = "1.1"
+fugit = "0.3.7"
 
 serde = { version = "1.0", default-features = false }
 postcard = "1.1"

@@ -1,9 +1,6 @@
 #![no_std]
+pub mod flight_controller;
 
-use embassy_executor::Spawner;
-
-pub mod flight_control;
-
-pub fn oxidrone_app(_spawner: Spawner) {
+pub async fn oxidrone_app_main() -> ! {
     todo!()
 }

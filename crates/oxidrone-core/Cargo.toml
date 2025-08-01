@@ -11,9 +11,6 @@ repository.workspace = true
 nalgebra = { workspace = true }
 micromath = { workspace = true }
 heapless = { workspace = true }
-embassy-executor = { workspace = true }
-embassy-sync = { workspace = true }
-embassy-futures = { workspace = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 embedded-io-async = { workspace = true }
@@ -21,4 +18,4 @@ defmt = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 postcard = { workspace = true }
 oxidrone-hal = { workspace = true }
-
+fugit.workspace = true

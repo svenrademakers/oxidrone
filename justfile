@@ -11,7 +11,7 @@ flash-release:
     cargo run -p matek-h743-wing --target thumbv7em-none-eabihf --release
 
 test:
-    cargo test -p oxidrone-core
+    cargo test
 
 clean:
     cargo clean

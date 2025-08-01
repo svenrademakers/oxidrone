@@ -1,25 +1,57 @@
 #![no_std]
 #![no_main]
 
-use cortex_m_rt::entry;
-use defmt_rtt as _;
-use embassy_executor::{Executor, InterruptExecutor};
-use embassy_stm32::interrupt;
-use oxidrone_core::{flight_control::flight_controller, oxidrone_app};
 use panic_probe as _;
+use rtic::app;
 
-static HIGH_PRIO_EXECUTOR: InterruptExecutor = InterruptExecutor::new();
+#[app(device = stm32h7xx_hal::pac, dispatchers = [EXTI3])]
+mod app {
+    use oxidrone_core::flight_controller::FlightController;
+    use stm32h7xx_hal::{pac, prelude::*, timer};
 
-#[entry]
-fn main() -> ! {
-    let irq: interrupt::Interrupt = interrupt::Interrupt::TIM1_UP;
-    let spawner = HIGH_PRIO_EXECUTOR.start(irq);
-    spawner.must_spawn(flight_controller());
+    #[shared]
+    struct Shared {/* shared resources */}
 
-    let mut executor = Executor::new();
-    // SAFETY: `executor` lives until `run()` (which never returns), so it's safe to promote
-    // its mutable reference to `'static`. This is required because `run()` expects a `'static` reference.
-    let static_executor =
-        unsafe { core::mem::transmute::<&'_ mut Executor, &'static mut Executor>(&mut executor) };
-    static_executor.run(oxidrone_app)
+    #[local]
+    struct Local {
+        flight_controller: FlightController,
+        tim2: timer::Timer<pac::TIM2>,
+    }
+
+    #[init]
+    fn init(cx: init::Context) -> (Shared, Local) {
+        let pwr = cx.device.PWR.constrain();
+        let pwrcfg = pwr.freeze();
+
+        let rcc = cx.device.RCC.constrain();
+        let ccdr = rcc
+            .sys_ck(200.MHz())
+            //.hclk(200.MHz())
+            .freeze(pwrcfg, &cx.device.SYSCFG);
+
+        let mut tim2 = cx
+            .device
+            .TIM2
+            .tick_timer(400.Hz(), ccdr.peripheral.TIM2, &ccdr.clocks);
+        tim2.listen(timer::Event::TimeOut);
+
+        let flight_controller = FlightController::new();
+        (
+            Shared {},
+            Local {
+                tim2,
+                flight_controller,
+            },
+        )
+    }
+
+    #[task(binds = TIM2, local = [tim2, flight_controller], priority = 2)]
+    fn flight_controller(cx: flight_controller::Context) {
+        cx.local.flight_controller.update();
+    }
+
+    #[task]
+    async fn app_main(_cx: app_main::Context) -> ! {
+        oxidrone_core::oxidrone_app_main().await
+    }
 }
