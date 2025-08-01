@@ -1,0 +1,32 @@
+name: Build Matek H743 Wing
+
+on:
+  push:
+    paths: [ 'boards/matek-h743-wing/**' ]
+  pull_request:
+    paths: [ 'boards/matek-h743-wing/**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Rust and target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv7em-none-eabihf
+
+      - uses: extractions/setup-just@v3
+
+      - name: Build Matek firmware
+        run: just matek-release
+
+      - name: Upload compiled firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: matek-h743-wing
+          path: target/thumbv7em-none-eabihf/release/matek-h743-wing
+

@@ -1,0 +1,19 @@
+name: Test oxidrone-core
+
+on:
+  push:
+    branches:
+      - '**'  # All branches
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run cargo test in crates/oxidrone-core
+        working-directory: crates/oxidrone-core
+        run: cargo test
+

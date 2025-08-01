@@ -1,0 +1,24 @@
+[package]
+name = "matek-h743-wing"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+oxidrone-core = { workspace = true }
+oxidrone-hal = { workspace = true }
+oxidrone-drivers = { workspace = true }
+embassy-executor = { workspace = true, features = ["arch-cortex-m"] }
+embassy-stm32 = { version = "0.2", features = ["defmt", "memory-x", "stm32h743vi"] }
+cortex-m-rt = "0.7"
+defmt = { workspace = true }
+defmt-rtt = { workspace = true }
+panic-probe = { workspace = true }
+
+
