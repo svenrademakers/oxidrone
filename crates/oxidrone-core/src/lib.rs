@@ -1,9 +1,14 @@
 #![no_std]
 
-use embassy_executor::Spawner;
+use crate::flight_control::flight_controller;
+use embassy_executor::{SendSpawner, Spawner};
 
 pub mod flight_control;
 
-pub fn oxidrone_app(_spawner: Spawner) {
+pub fn high_prio_spawner(spawner: SendSpawner) {
+    spawner.must_spawn(flight_controller())
+}
+
+pub fn app_spawner(_spawner: Spawner) {
     todo!()
 }

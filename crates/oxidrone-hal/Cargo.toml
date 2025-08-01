@@ -4,3 +4,9 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+embassy-executor = { workspace = true }
+
+[target.'cfg(target_arch = "arm")'.dependencies]
+embassy-executor = { workspace = true, features = ["arch-cortex-m"] }
+cortex-m = "0.7"
+cortex-m-rt = "0.7"

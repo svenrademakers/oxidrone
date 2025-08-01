@@ -633,7 +633,6 @@ dependencies = [
  "cortex-m-rt",
  "defmt 1.0.1",
  "defmt-rtt",
- "embassy-executor",
  "embassy-stm32",
  "oxidrone-core",
  "oxidrone-drivers",
@@ -740,6 +739,11 @@ version = "0.1.0"
 [[package]]
 name = "oxidrone-hal"
 version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "embassy-executor",
+]
 
 [[package]]
 name = "panic-probe"

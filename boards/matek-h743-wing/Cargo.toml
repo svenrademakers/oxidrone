@@ -14,11 +14,9 @@ categories.workspace = true
 oxidrone-core = { workspace = true }
 oxidrone-hal = { workspace = true }
 oxidrone-drivers = { workspace = true }
-embassy-executor = { workspace = true, features = ["arch-cortex-m"] }
 embassy-stm32 = { version = "0.2", features = ["defmt", "memory-x", "stm32h743vi"] }
-cortex-m-rt = "0.7"
 defmt = { workspace = true }
 defmt-rtt = { workspace = true }
 panic-probe = { workspace = true }
-
+cortex-m-rt = "0.7"
 
