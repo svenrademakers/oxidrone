@@ -2,5 +2,17 @@
 name = "oxidrone-drivers"
 version = "0.1.0"
 edition = "2024"
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
 
 [dependencies]
+embedded-hal.workspace = true
+defmt.workspace = true
+nalgebra.workspace = true
+heapless.workspace = true
+fugit.workspace = true
+rtic-time.workspace = true
+
+oxidrone-hal.workspace = true

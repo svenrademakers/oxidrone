@@ -4,7 +4,7 @@ members = [
     "crates/oxidrone-core",
     "crates/oxidrone-drivers",
     "crates/oxidrone-hal",
-    "boards/matek-h743-wing",
+    "boards/matekh743",
 ]
 
 [workspace.package]
@@ -14,19 +14,18 @@ license = "AGPL-3.0"
 authors = ["Sven Rademakers <sven.rademakers@gmail.com>"]
 repository = "https://github.com/svenrademakers/oxidrone"
 homepage = "https://oxidrone.io"
-documentation = "https://docs.rs/oxidrone"
 keywords = ["drone", "flight-controller", "embedded", "async", "stm32"]
 categories = ["embedded", "aerospace"]
 
 [workspace.dependencies]
 rtic = "2.2.0"
-defmt = "1.0"
-defmt-rtt = "1.0"
-panic-probe = { version = "1.0", features = ["print-defmt"] }
+rtic-time = "2.0.1"
+rtic-monotonics = "2.1.0"
+panic-probe = "1.0"
 
-embedded-hal = "1.0"
-embedded-hal-async = "1.0"
-embedded-io-async = "0.6"
+defmt = "1.0"
+
+embedded-hal = "1.0.0"
 
 micromath = { version = "2.1", features = ["vector"] }
 nalgebra = { version = "0.34", default-features = false, features = ["libm"] }
@@ -41,13 +40,3 @@ oxidrone-core = { path = "crates/oxidrone-core" }
 oxidrone-drivers = { path = "crates/oxidrone-drivers" }
 oxidrone-hal = { path = "crates/oxidrone-hal" }
 
-[profile.release]
-debug = 2
-lto = true
-opt-level = "s"
-overflow-checks = false
-
-[profile.dev]
-debug = 2
-opt-level = 1
-overflow-checks = true

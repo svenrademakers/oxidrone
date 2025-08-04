@@ -45,10 +45,10 @@ To build the software, pick on of 2 variants:
 
 ```shell
 # Build debug version
-just matek
+just matekh743
 
 # Build release version
-just matek release
+just matekh743 release
 ```
 
 flashing can be done by executing the following command:

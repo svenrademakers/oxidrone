@@ -3,7 +3,7 @@ name = "oxidrone-core"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "Core flight controller logic for OxiDrone"
+description = "Core controller logic for OxiDrone"
 authors.workspace = true
 repository.workspace = true
 
@@ -12,8 +12,6 @@ nalgebra = { workspace = true }
 micromath = { workspace = true }
 heapless = { workspace = true }
 embedded-hal = { workspace = true }
-embedded-hal-async = { workspace = true }
-embedded-io-async = { workspace = true }
 defmt = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 postcard = { workspace = true }

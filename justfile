@@ -1,17 +1,14 @@
-matek:
-    cargo build -p matek-h743-wing --target thumbv7em-none-eabihf
+matekh743:
+    (cd boards/matekh743 && cargo build)
 
-matek-release:
-    cargo build -p matek-h743-wing --target thumbv7em-none-eabihf --release
+matekh743-release:
+    (cd boards/matekh743 && cargo build --release)
 
 flash:
-    cargo run -p matek-h743-wing --target thumbv7em-none-eabihf
-
-flash-release:
-    cargo run -p matek-h743-wing --target thumbv7em-none-eabihf --release
+    (cd boards/matekh743 && cargo dfu -p matekh743 --release)
 
 test:
-    cargo test
+    cargo test -p oxidrone-core -p oxidrone-hal -p oxidrone-drivers
 
 clean:
     cargo clean
