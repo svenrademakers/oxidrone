@@ -8,4 +8,4 @@ heapless.workspace = true
 nalgebra.workspace = true
 embedded-hal.workspace = true
 rtic-time.workspace = true
-
+usb-device.workspace = true

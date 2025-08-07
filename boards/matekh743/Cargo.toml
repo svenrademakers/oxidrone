@@ -15,9 +15,11 @@ rtic = { workspace = true, features = ["thumbv7-backend"] }
 cortex-m-rt = "0.7"
 rtic-time.workspace = true
 rtic-monotonics = { workspace = true, features = ["stm32h743ag", "stm32_tim2"] }
-stm32h7xx-hal = { git = "https://github.com/stm32-rs/stm32h7xx-hal", branch = "eh-v1.0", features = ["stm32h743", "rt"] }
+stm32h7xx-hal = { git = "https://github.com/stm32-rs/stm32h7xx-hal", branch = "eh-v1.0", features = ["stm32h743", "rt", "usb_hs"] }
+usb-device.workspace = true
+static_cell.workspace = true
 
 [features]
-default = ["mini"]
+default = ["mini", "cdc-acm"]
 mini = []
-
+cdc-acm = []

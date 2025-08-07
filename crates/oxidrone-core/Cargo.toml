@@ -17,3 +17,5 @@ serde = { workspace = true, features = ["derive"] }
 postcard = { workspace = true }
 oxidrone-hal = { workspace = true }
 fugit.workspace = true
+usb-device.workspace = true
+usbd-serial = "0.2.2"

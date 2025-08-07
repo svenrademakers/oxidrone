@@ -1,36 +1,36 @@
 #![allow(unused_variables, dead_code)]
-use core::str::FromStr;
-use nalgebra::Vector3;
-use oxidrone_hal::imu::{
-    AdvancedSensorFeatures, FifoOperations, ImuResult, ImuSensor, ImuStatus,
+use crate::imu::{
+    self, AdvancedSensorFeatures, FifoOperations, ImuResult, ImuSensor, ImuStatus,
     InertialMeasurementUnit, ProcessedSensorData, SensorCalibration, SensorDataReader,
 };
+use core::str::FromStr;
+use nalgebra::Vector3;
 
 #[derive(Debug, Default)]
 pub struct DummyImu {
-    config: oxidrone_hal::imu::SensorConfig,
+    config: imu::SensorConfig,
 }
 
 impl InertialMeasurementUnit for DummyImu {
-    fn update(&mut self) -> oxidrone_hal::imu::ImuResult<()> {
+    fn update(&mut self) -> imu::ImuResult<()> {
         Ok(())
     }
 
-    fn get_status(&self) -> oxidrone_hal::imu::ImuStatus {
+    fn get_status(&self) -> imu::ImuStatus {
         ImuStatus::default()
     }
 }
 
 impl ImuSensor for DummyImu {
-    fn initialize(&mut self) -> oxidrone_hal::imu::ImuResult<()> {
+    fn initialize(&mut self) -> imu::ImuResult<()> {
         Ok(())
     }
 
-    fn start(&mut self) -> oxidrone_hal::imu::ImuResult<()> {
+    fn start(&mut self) -> imu::ImuResult<()> {
         Ok(())
     }
 
-    fn stop(&mut self) -> oxidrone_hal::imu::ImuResult<()> {
+    fn stop(&mut self) -> imu::ImuResult<()> {
         Ok(())
     }
 
@@ -38,14 +38,11 @@ impl ImuSensor for DummyImu {
         true
     }
 
-    fn get_config(&self) -> &oxidrone_hal::imu::SensorConfig {
+    fn get_config(&self) -> &imu::SensorConfig {
         &self.config
     }
 
-    fn set_config(
-        &mut self,
-        config: oxidrone_hal::imu::SensorConfig,
-    ) -> oxidrone_hal::imu::ImuResult<()> {
+    fn set_config(&mut self, config: imu::SensorConfig) -> imu::ImuResult<()> {
         Ok(())
     }
 
@@ -61,9 +58,7 @@ impl ImuSensor for DummyImu {
 impl SensorDataReader for DummyImu {
     type Duration = u32;
 
-    fn read_data(
-        &mut self,
-    ) -> oxidrone_hal::imu::ImuResult<oxidrone_hal::imu::ProcessedSensorData<Self::Duration>> {
+    fn read_data(&mut self) -> imu::ImuResult<imu::ProcessedSensorData<Self::Duration>> {
         Ok(ProcessedSensorData::default())
     }
 
@@ -81,18 +76,18 @@ impl SensorDataReader for DummyImu {
 }
 
 impl FifoOperations for DummyImu {
-    fn fifo_reset(&mut self) -> oxidrone_hal::imu::ImuResult<()> {
+    fn fifo_reset(&mut self) -> imu::ImuResult<()> {
         Ok(())
     }
 
-    fn fifo_count(&mut self) -> oxidrone_hal::imu::ImuResult<u16> {
+    fn fifo_count(&mut self) -> imu::ImuResult<u16> {
         Ok(0)
     }
 
     fn read_fifo<'a>(
         &mut self,
-        data: &'a mut [core::mem::MaybeUninit<oxidrone_hal::imu::RawSensorData>],
-    ) -> oxidrone_hal::imu::ImuResult<&'a [oxidrone_hal::imu::RawSensorData]> {
+        data: &'a mut [core::mem::MaybeUninit<imu::RawSensorData>],
+    ) -> imu::ImuResult<&'a [imu::RawSensorData]> {
         Ok(&[])
     }
 
@@ -101,7 +96,7 @@ impl FifoOperations for DummyImu {
         enable_gyro: bool,
         enable_accel: bool,
         enable_temp: bool,
-    ) -> oxidrone_hal::imu::ImuResult<()> {
+    ) -> imu::ImuResult<()> {
         Ok(())
     }
 }
@@ -140,26 +135,19 @@ impl SensorCalibration for DummyImu {
 }
 
 impl AdvancedSensorFeatures for DummyImu {
-    fn set_highres_sampling(&mut self, enable: bool) -> oxidrone_hal::imu::ImuResult<()> {
+    fn set_highres_sampling(&mut self, enable: bool) -> imu::ImuResult<()> {
         Ok(())
     }
 
-    fn set_fast_sampling(&mut self, rate_multiplier: u8) -> oxidrone_hal::imu::ImuResult<()> {
+    fn set_fast_sampling(&mut self, rate_multiplier: u8) -> imu::ImuResult<()> {
         Ok(())
     }
 
-    fn set_rotation(
-        &mut self,
-        rotation: nalgebra::Rotation3<f32>,
-    ) -> oxidrone_hal::imu::ImuResult<()> {
+    fn set_rotation(&mut self, rotation: nalgebra::Rotation3<f32>) -> imu::ImuResult<()> {
         Ok(())
     }
 
-    fn configure_filters(
-        &mut self,
-        gyro_lpf_hz: u16,
-        accel_lpf_hz: u16,
-    ) -> oxidrone_hal::imu::ImuResult<()> {
+    fn configure_filters(&mut self, gyro_lpf_hz: u16, accel_lpf_hz: u16) -> imu::ImuResult<()> {
         Ok(())
     }
 
@@ -167,7 +155,7 @@ impl AdvancedSensorFeatures for DummyImu {
         0f32
     }
 
-    fn self_test(&mut self) -> oxidrone_hal::imu::ImuResult<bool> {
+    fn self_test(&mut self) -> imu::ImuResult<bool> {
         Ok(true)
     }
 }

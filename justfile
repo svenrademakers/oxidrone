@@ -5,6 +5,7 @@ matekh743-release:
     (cd boards/matekh743 && cargo build --release)
 
 flash:
+    just matekh743-release
     (cd boards/matekh743 && cargo dfu -p matekh743 --release)
 
 test:

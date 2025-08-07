@@ -22,8 +22,9 @@ rtic = "2.2.0"
 rtic-time = "2.0.1"
 rtic-monotonics = "2.1.0"
 panic-probe = "1.0"
-
+usb-device = "0.3.2"
 defmt = "1.0"
+static_cell = "2.1.1"
 
 embedded-hal = "1.0.0"
 
@@ -39,4 +40,3 @@ postcard = "1.1"
 oxidrone-core = { path = "crates/oxidrone-core" }
 oxidrone-drivers = { path = "crates/oxidrone-drivers" }
 oxidrone-hal = { path = "crates/oxidrone-hal" }
-
