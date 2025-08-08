@@ -1,12 +1,12 @@
 matekh743:
-    (cd boards/matekh743 && cargo build)
+    cargo build -p oxidrone-bin --target thumbv7em-none-eabihf --features board-matekh743-mini
 
 matekh743-release:
-    (cd boards/matekh743 && cargo build --release)
+    cargo build -p oxidrone-bin --target thumbv7em-none-eabihf --features board-matekh743-mini --release
 
 flash:
     just matekh743-release
-    (cd boards/matekh743 && cargo dfu -p matekh743 --release)
+    cargo dfu -p oxidrone-bin --target thumbv7em-none-eabihf --features board-matekh743-mini --release
 
 test:
     cargo test -p oxidrone-core -p oxidrone-hal -p oxidrone-drivers

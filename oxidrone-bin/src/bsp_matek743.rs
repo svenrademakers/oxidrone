@@ -17,14 +17,14 @@ use usb_device::bus::UsbBusAllocator;
 static EP_MEMORY: StaticCell<[MaybeUninit<u32>; 1024]> = StaticCell::new();
 static USB_BUS: StaticCell<UsbBusAllocator<UsbBus<USB2>>> = StaticCell::new();
 
-pub struct PlatformMatek {
+pub struct Platform {
     tim2: Option<Timer<TIM2>>,
     green_led: Option<EPin<Output<PushPull>>>,
     blue_led: Option<EPin<Output<PushPull>>>,
     usb: Option<&'static UsbBusAllocator<UsbBus<USB2>>>,
 }
 
-impl PlatformAbstraction for PlatformMatek {
+impl PlatformAbstraction for Platform {
     type OutputPin = EPin<Output<PushPull>>;
     type IMU = DummyImu;
     type USB = UsbBus<USB2>;
@@ -50,7 +50,7 @@ impl PlatformAbstraction for PlatformMatek {
     }
 }
 
-impl PlatformMatek {
+impl Platform {
     pub fn system_init(dp: Peripherals) -> Self {
         let pwr = dp.PWR.constrain();
         let pwrcfg = pwr.freeze();
@@ -114,7 +114,7 @@ impl PlatformMatek {
         let mem = unsafe { core::mem::transmute::<_, &'static mut [u32; 1024]>(ep_mem) };
         let usb = Some(USB_BUS.init(UsbBus::new(usb_dev, mem)) as &'static _);
 
-        PlatformMatek {
+        Platform {
             tim2: Some(tim2),
             green_led,
             blue_led,

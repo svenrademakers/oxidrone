@@ -4,7 +4,7 @@ members = [
     "crates/oxidrone-core",
     "crates/oxidrone-drivers",
     "crates/oxidrone-hal",
-    "boards/matekh743",
+    "oxidrone-bin",
 ]
 
 [workspace.package]

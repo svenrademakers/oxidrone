@@ -1,32 +1,8 @@
-#![no_std]
-#![no_main]
-#![feature(maybe_uninit_array_assume_init)]
-
-mod platform;
-
-use panic_probe as _;
 use rtic::app;
-
-#[defmt::global_logger]
-struct Logger;
-
-unsafe impl defmt::Logger for Logger {
-    fn acquire() {}
-    unsafe fn release() {}
-    unsafe fn write(_bytes: &[u8]) {}
-    unsafe fn flush() {
-        todo!()
-    }
-}
-
-#[unsafe(no_mangle)]
-fn _defmt_timestamp() -> u64 {
-    0
-}
 
 #[app(device = stm32h7xx_hal::pac, peripherals = true)]
 mod app {
-    use crate::platform::PlatformMatek;
+    use crate::bsp::Platform;
     use oxidrone_core::SerialLogger;
     use oxidrone_core::flight_controller::FlightController;
     use stm32h7xx_hal::stm32::TIM2;
@@ -38,13 +14,13 @@ mod app {
     #[local]
     struct Local {
         tim2: Timer<TIM2>,
-        flight_controller: FlightController<PlatformMatek>,
-        logger: SerialLogger<PlatformMatek>,
+        flight_controller: FlightController<Platform>,
+        logger: SerialLogger<Platform>,
     }
 
     #[init]
     fn init(cx: init::Context) -> (Shared, Local) {
-        let mut platform = PlatformMatek::system_init(cx.device);
+        let mut platform = Platform::system_init(cx.device);
         let tim2 = platform.timer2().unwrap();
         let logger = SerialLogger::new(&mut platform);
         let flight_controller = FlightController::new(platform);
