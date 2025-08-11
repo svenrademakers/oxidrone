@@ -1,3 +1,4 @@
+use defmt::error;
 use embedded_hal::digital::OutputPin;
 use oxidrone_hal::platform::PlatformAbstraction;
 
@@ -7,7 +8,7 @@ where
 {
     state: bool,
     primary_led: P::OutputPin,
-    secondary_led: P::OutputPin,
+    count: usize,
 }
 
 impl<P> FlightController<P>
@@ -17,21 +18,20 @@ where
 {
     pub fn new(mut platform: P) -> Self {
         let primary_led = platform.primary_led().unwrap();
-        let secondary_led = platform.secondary_led().unwrap();
         Self {
             state: false,
             primary_led,
-            secondary_led,
+            count: 0,
         }
     }
 
     pub fn update(&mut self) {
         if self.state {
+            error!("heartbeat {=usize}", self.count);
             self.primary_led.set_low().unwrap();
-            self.secondary_led.set_high().unwrap();
+            self.count += 1;
         } else {
             self.primary_led.set_high().unwrap();
-            self.secondary_led.set_low().unwrap();
         }
         self.state = !self.state;
     }

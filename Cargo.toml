@@ -1,10 +1,10 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/oxidrone-core",
-    "crates/oxidrone-drivers",
-    "crates/oxidrone-hal",
-    "oxidrone-bin",
+  "crates/oxidrone-core",
+  "crates/oxidrone-drivers",
+  "crates/oxidrone-hal",
+  "oxidrone-bin",
 ]
 
 [workspace.package]
@@ -21,9 +21,12 @@ categories = ["embedded", "aerospace"]
 rtic = "2.2.0"
 rtic-time = "2.0.1"
 rtic-monotonics = "2.1.0"
+embassy-sync = "0.7.0"
 panic-probe = "1.0"
+critical-section = "1.2.0"
+defmt = { version = "1.0", features = ["encoding-rzcobs"] }
+
 usb-device = "0.3.2"
-defmt = "1.0"
 static_cell = "2.1.1"
 
 embedded-hal = "1.0.0"
@@ -40,3 +43,6 @@ postcard = "1.1"
 oxidrone-core = { path = "crates/oxidrone-core" }
 oxidrone-drivers = { path = "crates/oxidrone-drivers" }
 oxidrone-hal = { path = "crates/oxidrone-hal" }
+
+[env]
+DEFMT_LOG = "info"

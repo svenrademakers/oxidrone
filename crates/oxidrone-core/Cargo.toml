@@ -18,4 +18,6 @@ postcard = { workspace = true }
 oxidrone-hal = { workspace = true }
 fugit.workspace = true
 usb-device.workspace = true
+critical-section.workspace = true
+embassy-sync.workspace = true
 usbd-serial = "0.2.2"

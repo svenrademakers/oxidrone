@@ -5,7 +5,7 @@ use oxidrone_hal::platform::PlatformAbstraction;
 use static_cell::StaticCell;
 use stm32h7xx_hal::gpio::Speed;
 use stm32h7xx_hal::gpio::{EPin, GpioExt, Output, PushPull};
-use stm32h7xx_hal::pac::Peripherals;
+use stm32h7xx_hal::pac::{Peripherals, TIM3};
 use stm32h7xx_hal::prelude::*;
 use stm32h7xx_hal::rcc::rec::UsbClkSel;
 use stm32h7xx_hal::stm32::TIM2;
@@ -19,9 +19,10 @@ static USB_BUS: StaticCell<UsbBusAllocator<UsbBus<USB2>>> = StaticCell::new();
 
 pub struct Platform {
     tim2: Option<Timer<TIM2>>,
+    tim3: Option<Timer<TIM3>>,
     green_led: Option<EPin<Output<PushPull>>>,
     blue_led: Option<EPin<Output<PushPull>>>,
-    usb: Option<&'static UsbBusAllocator<UsbBus<USB2>>>,
+    usb: &'static UsbBusAllocator<UsbBus<USB2>>,
 }
 
 impl PlatformAbstraction for Platform {
@@ -46,7 +47,7 @@ impl PlatformAbstraction for Platform {
     }
 
     fn usb0(&mut self) -> Option<&'static UsbBusAllocator<Self::USB>> {
-        self.usb.take()
+        Some(self.usb)
     }
 }
 
@@ -74,11 +75,14 @@ impl Platform {
         let blue_led = Some(gpioe.pe3.into_push_pull_output().into());
 
         let mut tim2 = dp.TIM2.timer(
-            MilliSeconds::from_ticks(200).into_rate(),
+            MilliSeconds::from_ticks(1).into_rate(),
             ccdr.peripheral.TIM2,
             &ccdr.clocks,
         );
         tim2.listen(Event::TimeOut);
+
+        let mut tim3 = dp.TIM3.timer(5.Hz(), ccdr.peripheral.TIM3, &ccdr.clocks);
+        tim3.listen(Event::TimeOut);
 
         // imu0
         let imu0_sck = gpioa.pa5.into_alternate();
@@ -106,16 +110,13 @@ impl Platform {
             &ccdr.clocks,
         );
 
-        let ep_mem = EP_MEMORY.init([MaybeUninit::uninit(); 1024]);
-        for slot in ep_mem.iter_mut() {
-            slot.write(0u32);
-        }
-
+        let ep_mem = EP_MEMORY.init([MaybeUninit::zeroed(); 1024]);
         let mem = unsafe { core::mem::transmute::<_, &'static mut [u32; 1024]>(ep_mem) };
-        let usb = Some(USB_BUS.init(UsbBus::new(usb_dev, mem)) as &'static _);
+        let usb = USB_BUS.init(UsbBus::new(usb_dev, mem)) as &'static _;
 
         Platform {
             tim2: Some(tim2),
+            tim3: Some(tim3),
             green_led,
             blue_led,
             usb,
@@ -124,5 +125,9 @@ impl Platform {
 
     pub fn timer2(&mut self) -> Option<Timer<TIM2>> {
         self.tim2.take()
+    }
+
+    pub fn timer3(&mut self) -> Option<Timer<TIM3>> {
+        self.tim3.take()
     }
 }

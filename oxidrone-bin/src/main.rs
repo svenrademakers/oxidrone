@@ -3,21 +3,21 @@
 
 use panic_probe as _;
 
-#[defmt::global_logger]
-struct Logger;
+#[cfg(feature = "usb_logger")]
+mod logger;
+#[cfg(not(feature = "usb_logger"))]
+mod defmt_noop {
+    // A unit struct marked as the global defmt logger
+    #[defmt::global_logger]
+    struct Logger;
 
-unsafe impl defmt::Logger for Logger {
-    fn acquire() {}
-    unsafe fn release() {}
-    unsafe fn write(_bytes: &[u8]) {}
-    unsafe fn flush() {
-        todo!()
+    // Minimal implementation: drop all bytes
+    unsafe impl defmt::Logger for Logger {
+        fn acquire() {} // no locking needed
+        unsafe fn write(_: &[u8]) {} // discard
+        unsafe fn flush() {} // nothing to flush
+        unsafe fn release() {} // no lock to release
     }
-}
-
-#[unsafe(no_mangle)]
-fn _defmt_timestamp() -> u64 {
-    0
 }
 
 #[cfg(feature = "board-matekh743-mini")]
